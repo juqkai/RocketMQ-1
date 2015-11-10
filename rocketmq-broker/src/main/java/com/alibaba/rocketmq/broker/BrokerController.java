@@ -533,20 +533,25 @@ public class BrokerController {
     public String getBrokerAddrForRegister(){
         try {
             String ip = System.getenv("rocket.ip");
-            Integer port = Integer.valueOf(System.getenv(""));
-            String tip = ip;
-            Integer tport = port;
-            if (ip == null || "".equals(ip)) {
-                tip = this.brokerConfig.getBrokerIP1();
+            String port = System.getenv("rocket.port");
+            String tip = this.brokerConfig.getBrokerIP1();
+            Integer tport = this.nettyServerConfig.getListenPort();
+            if (!isEmpty(ip)) {
+                tip = ip;
             }
-            if (port == null || port.equals("rocket.port")) {
-                tport = this.nettyServerConfig.getListenPort();
+            if (!isEmpty(port)) {
+                tport = Integer.valueOf(port);
             }
             String addr = tip + ":" + tport;
+            System.out.println("注册地址：" + addr);
             return addr;
         } catch (Exception e) {
             return getBrokerAddr();
         }
+    }
+
+    private Boolean isEmpty(String str){
+        return str == null || str.equals("");
     }
 
 
@@ -661,16 +666,17 @@ public class BrokerController {
     public String getHABrokerAddrForRegister(){
         try {
             String ip = System.getenv("rocket.ha.ip");
-            Integer port = Integer.valueOf(System.getenv("rocket.ha.port"));
-            String tip = ip;
-            Integer tport = port;
-            if (ip == null || "".equals(ip)) {
-                tip = this.brokerConfig.getBrokerIP2();
+            String port = System.getenv("rocket.ha.port");
+            String tip = this.brokerConfig.getBrokerIP2();
+            Integer tport = this.messageStoreConfig.getHaListenPort();
+            if (!isEmpty(ip)) {
+                tip = ip;
             }
-            if (port == null || port.equals("")) {
-                tport = this.messageStoreConfig.getHaListenPort();
+            if (!isEmpty(port)) {
+                tport = Integer.valueOf(port);
             }
             String addr = tip + ":" + tport;
+            System.out.println("注册HA地址：" + addr);
             return addr;
         } catch (Exception e) {
             return getHAServerAddr();
