@@ -1,0 +1,6 @@
+FROM index.alauda.cn/library/java:7-jre
+COPY . /usr/local/rocketmq
+EXPOSE 10911
+WORKDIR /usr/local/rocketmq
+ENTRYPOINT ["sh", "mqbroker"]
+CMD ["-c", "conf/2m-noslave/broker-a.properties"]
