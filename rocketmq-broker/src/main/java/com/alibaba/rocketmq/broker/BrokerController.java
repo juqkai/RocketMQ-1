@@ -514,7 +514,7 @@ public class BrokerController {
     private void unregisterBrokerAll() {
         this.brokerOuterAPI.unregisterBrokerAll(//
             this.brokerConfig.getBrokerClusterName(), //
-            this.getBrokerAddr(), //
+            this.getBrokerAddrForRegister(), //
             this.brokerConfig.getBrokerName(), //
             this.brokerConfig.getBrokerId());
     }
@@ -524,6 +524,31 @@ public class BrokerController {
         String addr = this.brokerConfig.getBrokerIP1() + ":" + this.nettyServerConfig.getListenPort();
         return addr;
     }
+
+
+    /**
+     * 获取broker的注册IP
+     * @return
+     */
+    public String getBrokerAddrForRegister(){
+        try {
+            String ip = System.getenv("rocket.ip");
+            Integer port = Integer.valueOf(System.getenv(""));
+            String tip = ip;
+            Integer tport = port;
+            if (ip == null || "".equals(ip)) {
+                tip = this.brokerConfig.getBrokerIP1();
+            }
+            if (port == null || port.equals("rocket.port")) {
+                tport = this.nettyServerConfig.getListenPort();
+            }
+            String addr = tip + ":" + tport;
+            return addr;
+        } catch (Exception e) {
+            return getBrokerAddr();
+        }
+    }
+
 
 
     public void start() throws Exception {
@@ -590,10 +615,10 @@ public class BrokerController {
 
         RegisterBrokerResult registerBrokerResult = this.brokerOuterAPI.registerBrokerAll(//
             this.brokerConfig.getBrokerClusterName(), //
-            this.getBrokerAddr(), //
+            this.getBrokerAddrForRegister(), //
             this.brokerConfig.getBrokerName(), //
             this.brokerConfig.getBrokerId(), //
-            this.getHAServerAddr(), //
+            this.getHABrokerAddrForRegister(), //
             topicConfigWrapper,//
             this.filterServerManager.buildNewFilterServerList(),//
             oneway);
@@ -625,6 +650,31 @@ public class BrokerController {
     public String getHAServerAddr() {
         String addr = this.brokerConfig.getBrokerIP2() + ":" + this.messageStoreConfig.getHaListenPort();
         return addr;
+    }
+
+
+
+    /**
+     * 获取broker的注册IP
+     * @return
+     */
+    public String getHABrokerAddrForRegister(){
+        try {
+            String ip = System.getenv("rocket.ha.ip");
+            Integer port = Integer.valueOf(System.getenv("rocket.ha.port"));
+            String tip = ip;
+            Integer tport = port;
+            if (ip == null || "".equals(ip)) {
+                tip = this.brokerConfig.getBrokerIP2();
+            }
+            if (port == null || port.equals("")) {
+                tport = this.messageStoreConfig.getHaListenPort();
+            }
+            String addr = tip + ":" + tport;
+            return addr;
+        } catch (Exception e) {
+            return getHAServerAddr();
+        }
     }
 
 
