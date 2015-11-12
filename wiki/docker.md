@@ -17,7 +17,7 @@ rocketmq.ha.port=1235
 
 运行namesrv
 ```
-docker run -it  juqkai/rocketmq-broker
+docker run -it  juqkai/rocketmq-namesrv
 ```
 
 运行broker
