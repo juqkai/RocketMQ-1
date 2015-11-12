@@ -1,5 +1,6 @@
 FROM index.alauda.cn/library/java:7-jre
-COPY . /usr/local/rocketmq
+ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64
+WORKDIR /usr/local/rocketmq
 
 ENV rocket.ip “dynamic”
 ENV rocket.port “dynamic”
@@ -7,6 +8,6 @@ ENV rocket.ha.ip “dynamic”
 ENV rocket.ha.port “dynamic”
 
 EXPOSE 10911 10912
-WORKDIR /usr/local/rocketmq
-ENTRYPOINT ["sh", "mqbroker"]
+COPY . /usr/local/rocketmq
+ENTRYPOINT ["sh", "/usr/local/rocketmq/bin/mqbroker"]
 CMD ["-c", "conf/2m-noslave/broker-a.properties"]

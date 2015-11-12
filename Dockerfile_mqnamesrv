@@ -1,5 +1,6 @@
 FROM index.alauda.cn/library/java:7-jre
-COPY . /usr/local/rocketmq
-EXPOSE 9876
+ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64
 WORKDIR /usr/local/rocketmq
-ENTRYPOINT ["sh", "mqnamesrv"]
+EXPOSE 9876
+COPY . /usr/local/rocketmq
+ENTRYPOINT ["sh", "/usr/local/rocketmq/bin/mqnamesrv"]
