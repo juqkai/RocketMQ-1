@@ -1,5 +1,11 @@
 FROM index.alauda.cn/library/java:7-jre
 COPY . /usr/local/rocketmq
+
+ENV rocket.ip “dynamic”
+ENV rocket.port “dynamic”
+ENV rocket.ha.ip “dynamic”
+ENV rocket.ha.port “dynamic”
+
 EXPOSE 10911
 WORKDIR /usr/local/rocketmq
 ENTRYPOINT ["sh", "mqbroker"]

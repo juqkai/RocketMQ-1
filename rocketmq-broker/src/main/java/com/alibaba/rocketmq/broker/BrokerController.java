@@ -533,7 +533,13 @@ public class BrokerController {
     public String getBrokerAddrForRegister(){
         try {
             String ip = System.getenv("rocket.ip");
+            if ("dynamic".equals(ip)) {
+                ip = System.getenv("HOST");
+            }
             String port = System.getenv("rocket.port");
+            if ("dynamic".equals(port)) {
+                ip = System.getenv("PORT_PORT0");
+            }
             String tip = this.brokerConfig.getBrokerIP1();
             Integer tport = this.nettyServerConfig.getListenPort();
             if (!isEmpty(ip)) {
@@ -666,7 +672,13 @@ public class BrokerController {
     public String getHABrokerAddrForRegister(){
         try {
             String ip = System.getenv("rocket.ha.ip");
+            if ("dynamic".equals(ip)) {
+                ip = System.getenv("HOST");
+            }
             String port = System.getenv("rocket.ha.port");
+            if ("dynamic".equals(port)) {
+                ip = System.getenv("PORT_PORT1");
+            }
             String tip = this.brokerConfig.getBrokerIP2();
             Integer tport = this.messageStoreConfig.getHaListenPort();
             if (!isEmpty(ip)) {
