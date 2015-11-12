@@ -6,7 +6,7 @@ ENV rocket.port “dynamic”
 ENV rocket.ha.ip “dynamic”
 ENV rocket.ha.port “dynamic”
 
-EXPOSE 10911
+EXPOSE 10911 10912
 WORKDIR /usr/local/rocketmq
 ENTRYPOINT ["sh", "mqbroker"]
 CMD ["-c", "conf/2m-noslave/broker-a.properties"]

@@ -12,7 +12,8 @@ rocketmq.ha.port=1235
 
 默认情况下会使用docker宿主机的IP，以及docker随机的端口。
 
-###运行命令
+
+###运行
 
 运行namesrv
 ```
@@ -25,5 +26,11 @@ docker run -it -e rocketmq.ip=192.168.1.1 -e rocketmq.ip=1234 -e rocketmq.ha.ip=
 ```
 不指定IP与端口
 ```
-docker run -it -e -P juqkai/rocketmq-broker
+docker run -it -P juqkai/rocketmq-broker
+```
+
+指定远程配置文件
+
+```
+docker run -it -P juqkai/rocketmq-broker -c http://192.168.1.2/broker-a.properties
 ```
