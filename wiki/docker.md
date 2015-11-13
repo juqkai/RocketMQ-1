@@ -4,10 +4,10 @@
 ###使用方式
 在rocketMQ启动时需要注册IP,端口，HA IP，HA端口。在环境变量中分别配置：
 ```
-rocketmq.ip=192.168.1.1
-rocketmq.port=1234
-rocketmq.ha.ip=192.168.1.1
-rocketmq.ha.port=1235
+rocketmq_ip=192.168.1.1
+rocketmq_port=1234
+rocketmq_ha_ip=192.168.1.1
+rocketmq_ha_port=1235
 ```
 
 默认情况下会使用docker宿主机的IP，以及docker随机的端口。
@@ -22,7 +22,7 @@ docker run -it  juqkai/rocketmq-namesrv
 
 运行broker
 ```
-docker run -it -e rocketmq.ip=192.168.1.1 -e rocketmq.ip=1234 -e rocketmq.ha.ip=192.168.1.1 -e rocketmq.ha.port=1235 -p 1234:10911 -p 1235:10912 juqkai/rocketmq-broker
+docker run -it -e rocketmq_ip=192.168.1.1 -e rocketmq_port=1234 -e rocketmq_ha_ip=192.168.1.1 -e rocketmq_ha_port=1235 -p 1234:10911 -p 1235:10912 juqkai/rocketmq-broker
 ```
 不指定IP与端口
 ```

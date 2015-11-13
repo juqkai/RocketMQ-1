@@ -525,6 +525,11 @@ public class BrokerController {
         return addr;
     }
 
+    public String getHAServerAddr() {
+        String addr = this.brokerConfig.getBrokerIP2() + ":" + this.messageStoreConfig.getHaListenPort();
+        return addr;
+    }
+
 
     /**
      * 获取broker的注册IP
@@ -532,14 +537,18 @@ public class BrokerController {
      */
     public String getBrokerAddrForRegister(){
         try {
-            String ip = System.getenv("rocket.ip");
+            String ip = System.getenv("rocketmq_ip");
             if ("dynamic".equals(ip)) {
                 ip = System.getenv("HOST");
             }
-            String port = System.getenv("rocket.port");
+            System.out.println("HA IP:" + ip);
+
+            String port = System.getenv("rocketmq_port");
             if ("dynamic".equals(port)) {
-                ip = System.getenv("PORT_PORT0");
+                port = System.getenv("PORT_10911");
             }
+            System.out.println("PORT:" + port);
+
             String tip = this.brokerConfig.getBrokerIP1();
             Integer tport = this.nettyServerConfig.getListenPort();
             if (!isEmpty(ip)) {
@@ -552,9 +561,46 @@ public class BrokerController {
             System.out.println("注册地址：" + addr);
             return addr;
         } catch (Exception e) {
+            e.printStackTrace();
             return getBrokerAddr();
         }
     }
+
+
+    /**
+     * 获取broker的注册IP
+     * @return
+     */
+    public String getHABrokerAddrForRegister(){
+        try {
+            String ip = System.getenv("rocketmq_ha_ip");
+            if ("dynamic".equals(ip)) {
+                ip = System.getenv("HOST");
+            }
+            System.out.println("HA IP:"+ ip);
+            String port = System.getenv("rocketmq_ha_port");
+            if ("dynamic".equals(port)) {
+                port = System.getenv("PORT_10912");
+            }
+            System.out.println("HA PORT:" + port);
+            String tip = this.brokerConfig.getBrokerIP2();
+            Integer tport = this.messageStoreConfig.getHaListenPort();
+            if (!isEmpty(ip)) {
+                tip = ip;
+            }
+            if (!isEmpty(port)) {
+                tport = Integer.valueOf(port);
+            }
+            String addr = tip + ":" + tport;
+            System.out.println("注册HA地址：" + addr);
+            return addr;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return getHAServerAddr();
+        }
+    }
+
+
 
     private Boolean isEmpty(String str){
         return str == null || str.equals("");
@@ -658,42 +704,6 @@ public class BrokerController {
     }
 
 
-    public String getHAServerAddr() {
-        String addr = this.brokerConfig.getBrokerIP2() + ":" + this.messageStoreConfig.getHaListenPort();
-        return addr;
-    }
-
-
-
-    /**
-     * 获取broker的注册IP
-     * @return
-     */
-    public String getHABrokerAddrForRegister(){
-        try {
-            String ip = System.getenv("rocket.ha.ip");
-            if ("dynamic".equals(ip)) {
-                ip = System.getenv("HOST");
-            }
-            String port = System.getenv("rocket.ha.port");
-            if ("dynamic".equals(port)) {
-                ip = System.getenv("PORT_PORT1");
-            }
-            String tip = this.brokerConfig.getBrokerIP2();
-            Integer tport = this.messageStoreConfig.getHaListenPort();
-            if (!isEmpty(ip)) {
-                tip = ip;
-            }
-            if (!isEmpty(port)) {
-                tport = Integer.valueOf(port);
-            }
-            String addr = tip + ":" + tport;
-            System.out.println("注册HA地址：" + addr);
-            return addr;
-        } catch (Exception e) {
-            return getHAServerAddr();
-        }
-    }
 
 
     public void updateAllConfig(Properties properties) {
